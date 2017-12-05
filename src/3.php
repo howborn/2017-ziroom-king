@@ -26,5 +26,5 @@ function array_form_max_str(array $Arr) {
     return implode('', $Arr);
 }
 
-$input = explode(',', trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
-echo array_form_max_str($input), PHP_EOL;
+while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+echo array_form_max_str(explode(',', $input)), PHP_EOL;

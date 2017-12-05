@@ -15,7 +15,7 @@ function josephus($n, $e)
     return $idx;
 }
 
-
-$input = str_replace(' ', '&', trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+$input = str_replace(' ', '&', $input);
 parse_str($input, $arr);
 echo josephus($arr['n'], $arr['e']), PHP_EOL;

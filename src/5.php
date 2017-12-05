@@ -70,6 +70,7 @@ class Knapsack
     }
 }
 
+/*while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));*/
 $input = 'MV10001 2 100,MV10002 3 120,MV10003 1 200,MV10004 3 200,MV10005 4 70,MV10006 3 120,MV10007 2 10,MV10008 2 30,MV10009 6 500,MV10010 3 400';
 $arr = explode(',', $input);
 array_walk($arr, function (&$value) {

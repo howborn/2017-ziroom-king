@@ -54,8 +54,8 @@ class Rank
     }
 }
 
-$numArr = explode(' ', trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
-$rank = new Rank($numArr, 110);
+while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+$rank = new Rank(explode(' ', $input), 110);
 
 array_walk($rank->run(), function($value) {
     echo $value, PHP_EOL;

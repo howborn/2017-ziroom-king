@@ -138,10 +138,10 @@ class Pool
 
 }
 
-$input = explode(',', trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
 $filter = function ($value) {
     return explode(' ', $value);
 };
 
-$pool = new Pool(array_map($filter, $input));
+$pool = new Pool(array_map($filter, explode(',', $input)));
 echo $pool->run(), PHP_EOL;

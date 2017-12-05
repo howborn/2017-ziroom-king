@@ -1,54 +1,76 @@
 <?php
 
-define('MAX', 9999999);
+define('MAX', 9999999999);
 
 class Path
 {
-    public $matrix = array();
+    /**
+     * 图对应索引数组
+     * @var array
+     */
     public $indexMatrix = array();
+
+    /**
+     * 顶点与索引映射关系
+     * @var array
+     */
     public $indexMap = array();
+
     public $startPoint;
     public $endPoint;
     public $len = 0;
 
+    /**
+     * 最短距离
+     * @var array
+     */
     public $D = array();
+
+    /**
+     * 已寻找集合
+     * @var array
+     */
     public $U = array();
+
+    /**
+     * 最短路径
+     * @var array
+     */
     public $P = array();
 
     public function __construct(array $matrix, $startPoint, $endPoint)
     {
-        $this->matrix = $matrix;
-        $trans = function ($matrix) {
-            $data = array();
-            foreach ($matrix as $key => $value) {
-                $data[] = array_values($value);
-            }
-            return $data;
-        };
-        $this->indexMatrix = $trans($matrix);
         $this->indexMap = array_keys($matrix);
         $this->len = count($matrix);
+
+        array_walk($matrix, function (&$value) {
+            $value = array_values($value);
+        });
+        $this->indexMatrix = array_values($matrix);
+        $this->startPoint = array_search($startPoint, $this->indexMap);
+        $this->endPoint = array_search($endPoint, $this->indexMap);
     }
 
     public function init()
     {
-        //初始化图
         for ($i = 0; $i < $this->len; $i++) {
             //初始化距离
-            $D[$i] = $this->indexMatrix[$this->startPoint][$i] > 0 ? $this->indexMatrix[$this->startPoint][$i] : MAX;
-            $P[$i] = array();
+            $this->D[$i] = $this->indexMatrix[$this->startPoint][$i] > 0 ? $this->indexMatrix[$this->startPoint][$i] : MAX;
+            $this->P[$i] = array();
             //初始化已寻找集合
             if ($i != $this->startPoint) {
-                array_push($P[$i], $i);
-                $U[$i] = false;
+                array_push($this->P[$i], $i);
+                $this->U[$i] = false;
             } else {
-                $U[$i] = true;
+                $this->U[$i] = true;
             }
         }
     }
 
     public function dijkstra()
     {
+        $this->init();
+
         for ($l = 1; $l < $this->len; $l++) {
             $min = MAX;
             //查找距离源点最近的节点{v}
@@ -59,12 +81,13 @@ class Path
                     $v = $i;
                 }
             }
-            $U[$v] = true;
+            $this->U[$v] = true;
+
             //更新最短路径
             for ($i = 0; $i < $this->len; $i++) {
-                if (!$U[$i] && ($min + $this->indexMatrix[$v][$i] < $this->D[$i])) {
-                    $D[$i] = $min + $this->indexMatrix[$v][$i];
-                    $P[$i] = array_merge($this->P[$v], array($i));
+                if (!$this->U[$i] && ($min + $this->indexMatrix[$v][$i] < $this->D[$i])) {
+                    $this->D[$i] = $min + $this->indexMatrix[$v][$i];
+                    $this->P[$i] = array_merge($this->P[$v], array($i));
                 }
             }
         }
@@ -80,11 +103,11 @@ class Path
         $path = $this->P[$this->endPoint];
         array_unshift($path, $this->startPoint);
 
-        $filter = function($value) {
-            return $this->indexMap[$value];
-        };
+        foreach ($path as &$value) {
+            $value = $this->indexMap[$value];
+        }
 
-        return array_map($filter, $path);
+        return $path;
     }
 }
 
@@ -102,68 +125,7 @@ $matrix = array(
     'H' => array('A' => MAX, 'B' => MAX, 'C' => MAX, 'D' => 5, 'E' => 7, 'F' => 25, 'G' => 17, 'H' => MAX),
 );
 
-function dijkstra($matrix, $startpoint, $endpoint, &$path = array())
-{
-    $idx = array_keys($matrix);
-    $trans = function ($matrix) {
-        $data = array();
-        foreach ($matrix as $key => $value) {
-            $data[] = array_values($value);
-        }
-        return $data;
-    };
-    $matrix = $trans($matrix);
-    $points = array_keys($matrix);
-    $count = count($points);
-
-    $startpoint = array_search($startpoint, $idx);
-    $endpoint = array_search($endpoint, $idx);
-
-    //最小距离点和已寻找集合
-    $D = $U = $P = array();
-    //初始化图
-    for ($i = 0; $i < $count; $i++) {
-        //初始化距离
-        $D[$i] = $matrix[$startpoint][$i] > 0 ? $matrix[$startpoint][$i] : MAX;
-        $P[$i] = array();
-        //初始化已寻找集合
-        if ($i != $startpoint) {
-            array_push($P[$i], $idx[$i]);
-            $U[$i] = false;
-        } else {
-            $U[$i] = true;
-        }
-    }
-
-    //n次循环完成转移节点任务
-    for ($l = 1; $l < $count; $l++) {
-        $min = MAX;
-        //查找距离源点最近的节点{v}
-        $v = $startpoint;
-        for ($i = 0; $i < $count; $i++) {
-            if (!$U[$i] && $D[$i] < $min) {
-                $min = $D[$i];
-                $v = $i;
-            }
-        }
-        $U[$v] = true;
-        //更新最短路径
-        for ($i = 0; $i < $count; $i++) {
-            if (!$U[$i] && ($min + $matrix[$v][$i] < $D[$i])) {
-                $D[$i] = $min + $matrix[$v][$i];
-                $P[$i] = array_merge($P[$v], array($idx[$i]));
-            }
-        }
-    }
-
-    foreach ($P as &$one) {
-        array_unshift($one, $idx[$startpoint]);
-    }
-    $path = array_combine($idx, $P);
-
-    return $D[$endpoint];
-}
-
-$path = array();
-$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]");
-echo dijkstra($matrix, $input{0}, $input{1}, $path), ' ', implode('-', $path[$input{1}]), PHP_EOL;
+while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+$path = new Path($matrix, $input{0}, $input{1});
+$path->dijkstra();
+echo $path->getDistance(), ' ', implode('-', $path->getPath()), PHP_EOL;

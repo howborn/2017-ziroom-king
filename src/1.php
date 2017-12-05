@@ -16,5 +16,6 @@ function getCards($rent) {
     return $cardNumber;
 }
 
-$card = getCards((int)trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+$card = getCards((int)$input);
 echo array_sum($card), PHP_EOL;
