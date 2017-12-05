@@ -101,7 +101,7 @@
 
 注： A B C D E F G H 都可能是仓库或者房间，点与点之间是距离。
 
-![](https://github.com/fan-haobai/2017-ziroom-king/point.png)
+![](https://github.com/fan-haobai/2017-ziroom-king/blob/master/point.png)
 
 示例：
 
