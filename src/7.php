@@ -43,7 +43,7 @@ class Path
         $this->indexMap = array_keys($matrix);
         $this->len = count($matrix);
 
-        array_walk($matrix, function (&$value) {
+        array_walk($matrix, function(&$value) {
             $value = array_values($value);
         });
         $this->indexMatrix = array_values($matrix);
