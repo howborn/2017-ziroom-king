@@ -2,6 +2,92 @@
 
 define('MAX', 9999999);
 
+class Path
+{
+    public $matrix = array();
+    public $indexMatrix = array();
+    public $indexMap = array();
+    public $startPoint;
+    public $endPoint;
+    public $len = 0;
+
+    public $D = array();
+    public $U = array();
+    public $P = array();
+
+    public function __construct(array $matrix, $startPoint, $endPoint)
+    {
+        $this->matrix = $matrix;
+        $trans = function ($matrix) {
+            $data = array();
+            foreach ($matrix as $key => $value) {
+                $data[] = array_values($value);
+            }
+            return $data;
+        };
+        $this->indexMatrix = $trans($matrix);
+        $this->indexMap = array_keys($matrix);
+        $this->len = count($matrix);
+    }
+
+    public function init()
+    {
+        //初始化图
+        for ($i = 0; $i < $this->len; $i++) {
+            //初始化距离
+            $D[$i] = $this->indexMatrix[$this->startPoint][$i] > 0 ? $this->indexMatrix[$this->startPoint][$i] : MAX;
+            $P[$i] = array();
+            //初始化已寻找集合
+            if ($i != $this->startPoint) {
+                array_push($P[$i], $i);
+                $U[$i] = false;
+            } else {
+                $U[$i] = true;
+            }
+        }
+    }
+
+    public function dijkstra()
+    {
+        for ($l = 1; $l < $this->len; $l++) {
+            $min = MAX;
+            //查找距离源点最近的节点{v}
+            $v = $this->startPoint;
+            for ($i = 0; $i < $this->len; $i++) {
+                if (!$this->U[$i] && $this->D[$i] < $min) {
+                    $min = $this->D[$i];
+                    $v = $i;
+                }
+            }
+            $U[$v] = true;
+            //更新最短路径
+            for ($i = 0; $i < $this->len; $i++) {
+                if (!$U[$i] && ($min + $this->indexMatrix[$v][$i] < $this->D[$i])) {
+                    $D[$i] = $min + $this->indexMatrix[$v][$i];
+                    $P[$i] = array_merge($this->P[$v], array($i));
+                }
+            }
+        }
+    }
+
+    public function getDistance()
+    {
+        return $this->D[$this->endPoint];
+    }
+
+    public function getPath()
+    {
+        $path = $this->P[$this->endPoint];
+        array_unshift($path, $this->startPoint);
+
+        $filter = function($value) {
+            return $this->indexMap[$value];
+        };
+
+        return array_map($filter, $path);
+    }
+}
+
 /**
  * 图
  */
