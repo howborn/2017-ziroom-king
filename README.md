@@ -101,6 +101,8 @@
 
 注： A B C D E F G H 都可能是仓库或者房间，点与点之间是距离。
 
+![](https://github.com/fan-haobai/2017-ziroom-king/point.png)
+
 示例：
 
 输入：AE
