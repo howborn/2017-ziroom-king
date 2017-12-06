@@ -1,6 +1,6 @@
 <?php
 /**
- * 比较规则
+ * 比较规则,ab和ba组合后的数字进行比较
  */
 function cmp($a, $b) {
     if ($a == $b) {
@@ -10,11 +10,6 @@ function cmp($a, $b) {
 }
 
 function array_form_max_str(array $Arr) {
-    //参数校验
-    if (!is_array($Arr)) {
-        return '';
-    }
-
     foreach ($Arr as $value) {
         if ($value < 0) {
             return '';
@@ -26,5 +21,6 @@ function array_form_max_str(array $Arr) {
     return implode('', $Arr);
 }
 
+//4,94,9,14,1
 while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
 echo array_form_max_str(explode(',', $input)), PHP_EOL;

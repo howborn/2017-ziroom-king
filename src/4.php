@@ -14,7 +14,8 @@ class Pool
 
         foreach ($data as $row => $rowArray) {
             foreach ($rowArray as $col => $height) {
-                $this->gridArray[$row][$col]['height'] = (int)$height;
+                $height = (int)$height;
+                $this->gridArray[$row][$col]['height'] = $height;
                 $this->gridArray[$row][$col]['water'] = 0;
 
                 if ($this->maxHeight < $height) {
@@ -52,7 +53,7 @@ class Pool
     {
         $can = false;
 
-        if (!$this->isBorder($row, $col)) {
+        if ($this->gridArray[$row][$col]['water'] > 0) {
             //上
             if ($this->gridArray[$row][$col]['water'] + $this->gridArray[$row][$col]['height'] >
                 $this->gridArray[$row - 1][$col]['water'] + $this->gridArray[$row - 1][$col]['height']) {
@@ -131,14 +132,15 @@ class Pool
     {
         $this->addWater();
         //进行漏水，一直到所有砖不需要漏水
-        while ($this->removeWater());
+        while ($this->removeWater()) ;
 
         return $this->collect();
     }
-
 }
 
-while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
+//[1 1 1 1,1 0 0 1,1 1 1 1]
+//[12 11 12 0 13,12 9 8 12 12,13 10 0 3 15,19 4 4 7 15,19 4 3 0 15,12 13 10 15 13]
+while (!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]")) ;
 $filter = function ($value) {
     return explode(' ', $value);
 };

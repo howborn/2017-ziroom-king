@@ -125,6 +125,7 @@ $matrix = array(
     'H' => array('A' => MAX, 'B' => MAX, 'C' => MAX, 'D' => 5, 'E' => 7, 'F' => 25, 'G' => 17, 'H' => MAX),
 );
 
+//AE
 while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
 $path = new Path($matrix, $input{0}, $input{1});
 $path->dijkstra();

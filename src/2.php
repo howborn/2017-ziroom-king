@@ -17,6 +17,10 @@ class Rank
         }
     }
 
+    /**
+     * 模拟3进制运算
+     * @param $number
+     */
     public function ternary($number)
     {
         $pos = 2 * $this->originLen - 3;
@@ -54,6 +58,7 @@ class Rank
     }
 }
 
+//[1 2 3 4 5 6 7 8 9]
 while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
 $rank = new Rank(explode(' ', $input), 110);
 

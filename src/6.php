@@ -15,6 +15,7 @@ function josephus($n, $e)
     return $idx;
 }
 
+//n=1314 e=520
 while(!$input = trim(fgets(STDIN), " \t\n\r\0\x0B[]"));
 $input = str_replace(' ', '&', $input);
 parse_str($input, $arr);
