@@ -27,7 +27,7 @@ class Knapsack
     public $v = array();
 
     /**
-     * 最大价值,$wv[$i][$w]中$i表示前i个物品重量为w时的最大价值
+     * 最大价值,$wv[$i][$w]表示前i个物品重量为w时的最大价值
      * @var array
      */
     public $wv = array();
