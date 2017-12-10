@@ -49,6 +49,8 @@ class Path
         $this->indexMatrix = array_values($matrix);
         $this->startPoint = array_search($startPoint, $this->indexMap);
         $this->endPoint = array_search($endPoint, $this->indexMap);
+        
+        $this->init();
     }
 
     public function init()
@@ -69,8 +71,6 @@ class Path
 
     public function dijkstra()
     {
-        $this->init();
-
         for ($l = 1; $l < $this->len; $l++) {
             $min = MAX;
             //查找距离源点最近的节点{v}
